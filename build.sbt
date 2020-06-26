@@ -50,6 +50,7 @@ lazy val scala213Modules = baseModules ++ dbModules ++ Seq[sbt.ClasspathDep[sbt.
   `quill-finagle-mysql`,
   `quill-cassandra`,
   `quill-cassandra-monix`,
+  `quill-cassandra-cats-effect`,
   `quill-orientdb`,
   `quill-jasync`,
   `quill-jasync-postgres`,
@@ -495,6 +496,19 @@ lazy val `quill-cassandra-monix` =
     .dependsOn(`quill-cassandra` % "compile->compile;test->test")
     .dependsOn(`quill-monix` % "compile->compile;test->test")
 
+lazy val `quill-cassandra-cats-effect` =
+  (project in file("quill-cassandra-cats-effect"))
+    .settings(commonSettings: _*)
+    .settings(mimaSettings: _*)
+    .settings(
+      fork in Test := true,
+      libraryDependencies ++= {
+        Seq(
+          "org.typelevel" %% "cats-effect" % "2.1.3" % Provided
+        )
+      }
+    )
+    .dependsOn(`quill-cassandra` % "compile->compile;test->test")
 
 lazy val `quill-cassandra-lagom` =
    (project in file("quill-cassandra-lagom"))
